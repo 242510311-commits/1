@@ -1,0 +1,15 @@
+@extends('layouts.app')
+
+@section('title', 'Edit Produk')
+
+@section('content')
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h4 class="mb-4">Edit Produk</h4>
+        <form action="{{ route('produk.update', $produk) }}" method="POST" enctype="multipart/form-data">
+            @method('PUT')
+            @include('produk._form')
+        </form>
+    </div>
+</div>
+@endsection
