@@ -15,6 +15,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'jenis_produk_id' => ['required', 'exists:jenis_produks,id'],
             'name' => ['required', 'string', 'max:255'],
             'purchase_price' => ['required', 'integer', 'min:0'],
             'selling_price' => ['required', 'integer', 'min:0'],
@@ -28,6 +29,8 @@ class UpdateRequest extends FormRequest
             'foto.image' => 'File yang diupload harus berupa gambar.',
             'foto.mimes' => 'Format gambar harus JPG, JPEG, atau PNG.',
             'foto.max' => 'Ukuran gambar maksimal 2 MB.',
+            'jenis_produk_id.required' => 'Jenis produk wajib dipilih.',
+            'jenis_produk_id.exists' => 'Jenis produk tidak valid.',
             'name.required' => 'Nama wajib diisi.',
             'purchase_price.required' => 'Harga beli wajib diisi.',
             'purchase_price.integer' => 'Harga beli harus berupa angka bulat.',

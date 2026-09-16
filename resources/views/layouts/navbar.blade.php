@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">
+        <a class="navbar-brand fw-bold" href="{{ route('about') }}">
             <i class="bi bi-shop"></i> POS Rizal
         </a>
 

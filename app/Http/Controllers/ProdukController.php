@@ -115,7 +115,7 @@ class ProdukController extends Controller
         $this->authorize('delete', $produk);
 
         if ($produk->itemPenjualan()->exists()) {
-            return back()->with('errors', 'Produk tidak dapat dihapus karena sudah digunakan dalam transaksi.');
+            return back()->with('error', 'Produk tidak dapat dihapus karena sudah digunakan dalam transaksi.');
         }
 
         if ($produk->foto) {

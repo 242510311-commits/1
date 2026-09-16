@@ -21,6 +21,7 @@ Route::middleware('guest')->group(function () {
 // Route Authenticated (Sudah Login)
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/about', [DashboardController::class, 'about'])->name('about');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Route Profil User

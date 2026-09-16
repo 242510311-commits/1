@@ -19,14 +19,25 @@
             </div>
         @endif
 
-        @if(session('errors'))
+        @if(session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('errors') }}
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        @elseif(session('errors'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @if(is_string(session('errors')))
+                    {{ session('errors') }}
+                @else
+                    @foreach(session('errors') as $error)
+                        {{ $error }}
+                    @endforeach
+                @endif
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
             </div>
         @endif
 
-        @if($errors->any())
+        @if($errors && method_exists($errors, 'any') && $errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
                     @foreach($errors->all() as $error)

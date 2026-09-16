@@ -93,7 +93,7 @@ class PenjualanController extends Controller
         ]);
 
         if ($penjualan->itemPenjualan()->count() === 0) {
-            return back()->with('errors', 'Keranjang masih kosong.');
+            return back()->with('error', 'Keranjang masih kosong.');
         }
 
         DB::transaction(function () use ($penjualan, $validated) {

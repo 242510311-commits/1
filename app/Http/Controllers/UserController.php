@@ -72,11 +72,11 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         if ($user->id === auth()->id()) {
-            return back()->with('errors', 'Akun yang sedang digunakan tidak dapat dihapus.');
+            return back()->with('error', 'Akun yang sedang digunakan tidak dapat dihapus.');
         }
 
         if ($user->penjualan()->exists()) {
-            return back()->with('errors', 'User tidak dapat dihapus karena memiliki riwayat penjualan.');
+            return back()->with('error', 'User tidak dapat dihapus karena memiliki riwayat penjualan.');
         }
 
         $user->delete();
