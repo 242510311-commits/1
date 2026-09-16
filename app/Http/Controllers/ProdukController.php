@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Produk\StoreRequest;
 use App\Http\Requests\Produk\UpdateRequest;
 use App\Http\Requests\SearchRequest;
+use App\Models\JenisProduk;
 use App\Models\Produk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +18,7 @@ class ProdukController extends Controller
 
         $keyword = trim((string) $request->input('search'));
 
-        $products = Produk::with('user')
+        $products = Produk::with(['user', 'jenisProduk'])
             ->when($keyword !== '', fn ($query) =>
                 $query->where('nama', 'like', "%{$keyword}%")
             )
@@ -32,20 +33,25 @@ class ProdukController extends Controller
     {
         $this->authorize('create', Produk::class);
 
-        return view('produk.create');
+        // Ambil semua data jenis produk untuk dropdown
+        $jenisProduk = JenisProduk::all();
+
+        return view('produk.create', compact('jenisProduk'));
     }
 
     public function store(StoreRequest $request)
     {
         $this->authorize('create', Produk::class);
 
-        $data = $request->validated();
+        $validated = $request->validated();
+        
         $data = [
-            'user_id' => Auth::id(),
-            'nama' => $data['name'],
-            'harga_beli' => $data['purchase_price'],
-            'harga_jual' => $data['selling_price'],
-            'stok' => $data['stock'],
+            'user_id'         => Auth::id(),
+            'jenis_produk_id' => $validated['jenis_produk_id'],
+            'nama'            => $validated['name'],
+            'harga_beli'      => $validated['purchase_price'],
+            'harga_jual'      => $validated['selling_price'],
+            'stok'            => $validated['stock'],
         ];
 
         if ($request->hasFile('foto')) {
@@ -69,7 +75,10 @@ class ProdukController extends Controller
     {
         $this->authorize('update', $produk);
 
-        return view('produk.edit', compact('produk'));
+        // Ambil data jenis produk untuk dropdown di halaman edit
+        $jenisProduk = JenisProduk::all();
+
+        return view('produk.edit', compact('produk', 'jenisProduk'));
     }
 
     public function update(UpdateRequest $request, Produk $produk)
@@ -79,11 +88,12 @@ class ProdukController extends Controller
         $validated = $request->validated();
 
         $data = [
-            'user_id' => Auth::id(),
-            'nama' => $validated['name'],
-            'harga_beli' => $validated['purchase_price'],
-            'harga_jual' => $validated['selling_price'],
-            'stok' => $validated['stock'],
+            'user_id'         => Auth::id(),
+            'jenis_produk_id' => $validated['jenis_produk_id'],
+            'nama'            => $validated['name'],
+            'harga_beli'      => $validated['purchase_price'],
+            'harga_jual'      => $validated['selling_price'],
+            'stok'            => $validated['stock'],
         ];
 
         if ($request->hasFile('foto')) {

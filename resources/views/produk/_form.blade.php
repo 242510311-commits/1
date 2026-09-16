@@ -24,6 +24,24 @@
          style="display:none; max-width:150px;">
 </div>
 
+{{-- Dropdown Jenis Produk --}}
+<div class="mb-3">
+    <label for="jenis_produk_id" class="form-label">Jenis Produk</label>
+    <select name="jenis_produk_id" id="jenis_produk_id" 
+            class="form-select @error('jenis_produk_id') is-invalid @enderror" required>
+        <option value="">-- Pilih Jenis Produk --</option>
+        @foreach($jenisProduk as $jenis)
+            <option value="{{ $jenis->id }}" 
+                {{ old('jenis_produk_id', $produk->jenis_produk_id ?? '') == $jenis->id ? 'selected' : '' }}>
+                {{ $jenis->nama_jenis }}
+            </option>
+        @endforeach
+    </select>
+    @error('jenis_produk_id')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
 <div class="mb-3">
     <label for="name" class="form-label">Nama Produk</label>
     <input type="text" id="name" name="name"

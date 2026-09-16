@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Produk;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -14,25 +14,31 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8'],
-            'role_id' => ['required', 'integer', 'exists:roles,id'],
+            'jenis_produk_id' => ['required', 'integer', 'exists:jenis_produks,id'],
+            'name'            => ['required', 'string', 'max:255'],
+            'purchase_price'  => ['required', 'numeric', 'min:0'],
+            'selling_price'   => ['required', 'numeric', 'min:0'],
+            'stock'           => ['required', 'integer', 'min:0'],
+            'foto'            => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'Nama wajib diisi.',
-            'name.max' => 'Nama maksimal 100 karakter.',
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email sudah digunakan.',
-            'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password minimal :min karakter.',
-            'role_id.required' => 'Role wajib dipilih.',
-            'role_id.exists' => 'Role tidak valid.',
+            'jenis_produk_id.required' => 'Jenis produk wajib dipilih.',
+            'jenis_produk_id.exists'   => 'Jenis produk tidak valid.',
+            'name.required'            => 'Nama produk wajib diisi.',
+            'name.max'                 => 'Nama produk maksimal 255 karakter.',
+            'purchase_price.required'  => 'Harga beli wajib diisi.',
+            'purchase_price.numeric'   => 'Harga beli harus berupa angka.',
+            'selling_price.required'   => 'Harga jual wajib diisi.',
+            'selling_price.numeric'    => 'Harga jual harus berupa angka.',
+            'stock.required'           => 'Stok wajib diisi.',
+            'stock.integer'            => 'Stok harus berupa angka bulat.',
+            'foto.image'               => 'File harus berupa gambar.',
+            'foto.mimes'               => 'Format gambar harus jpeg, png, atau jpg.',
+            'foto.max'                 => 'Ukuran gambar maksimal 2MB.',
         ];
     }
 }

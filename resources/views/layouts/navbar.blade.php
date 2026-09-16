@@ -21,10 +21,14 @@
                        href="{{ route('produk.index') }}">Produk</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('jenis-produk.*') ? 'active' : '' }}"
+                       href="{{ route('jenis-produk.index') }}">Jenis Produk</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('penjualan.*') ? 'active' : '' }}"
                        href="{{ route('penjualan.index') }}">Penjualan</a>
                 </li>
-                @if(auth()->user()->hasRole('admin'))
+                @if(auth()->user()?->hasRole('admin'))
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
                            href="{{ route('admin.users.index') }}">Users</a>
@@ -32,18 +36,41 @@
                 @endif
             </ul>
 
+            @auth
             <div class="d-flex align-items-center gap-2">
-                <span class="text-white small">
-                    {{ auth()->user()->name }}
-                    <span class="badge text-bg-secondary">{{ ucfirst(auth()->user()->role?->name ?? '-') }}</span>
-                </span>
+    <div class="dropdown">
+        <button class="btn btn-outline-light btn-sm dropdown-toggle d-flex align-items-center gap-2" 
+                type="button" id="userProfileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i>
+            <span>{{ auth()->user()->name ?? 'User Test' }}</span>
+            <span class="badge text-bg-secondary">
+                {{ ucfirst(auth()->user()->role?->name ?? 'User') }}
+            </span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userProfileDropdown">
+            <li>
+                <a class="dropdown-item" href="{{ route('profile.show') }}">
+                    <i class="bi bi-person-circle me-2"></i> Profil Saya
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                    <i class="bi bi-person-gear me-2"></i> Edit Profil Saya
+                </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
                 <form action="{{ route('logout') }}" method="POST" class="m-0">
                     @csrf
-                    <button type="submit" class="btn btn-outline-light btn-sm">
-                        Logout
+                    <button type="submit" class="dropdown-item text-danger">
+                        <i class="bi bi-box-arrow-right me-2"></i> Logout
                     </button>
                 </form>
-            </div>
+            </li>
+        </ul>
+    </div>
+</div>
+            @endauth
         </div>
     </div>
 </nav>
